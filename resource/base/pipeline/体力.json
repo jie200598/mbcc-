@@ -3,6 +3,7 @@
         "next": [
             "开始领取体力",
             "开始领取体力2",
+            "开始领取体力3",
             "[JumpBack]管理局入口",
             "[JumpBack]危机管理2",
             "[JumpBack]危机管理",
@@ -27,6 +28,10 @@
         "post_delay": 1000,
         "next": [
             "识别第一罐体力"
+        ],
+        "timeout": 8000,
+        "on_error": [
+            "主菜单"
         ]
     },
     "开始领取体力2": {
@@ -38,8 +43,40 @@
             193,
             211
         ],
+        "action": "Click",
+        "target": [185,330,1,1],
+        "post_delay": 1000,
+        "focus": {
+            "Node.Action.Succeeded": "领取体力"
+        },
+        "next": [
+            "识别第一罐体力"
+        ],
+        "timeout": 8000,
+        "on_error": [
+            "主菜单"
+        ]
+    },
+    "开始领取体力3": {
+        "recognition": "TemplateMatch",
+        "template": "体力3.png",
+        "roi": [
+            77,
+            250,
+            193,
+            211
+        ],
+        "action": "Click",
+        "target": [185,330,1,1],
+        "focus": {
+            "Node.Action.Succeeded": "领取体力"
+        },
         "post_delay": 1000,
         "next": [
+            "识别第一罐体力"
+        ],
+        "timeout": 8000,
+        "on_error": [
             "主菜单"
         ]
     },

@@ -23,6 +23,7 @@
             320,
             79
         ],
+        "threshold": 0.85,
         "action": "Click",
         "post_wait_freezes": 30
     },
@@ -35,6 +36,7 @@
             320,
             79
         ],
+        "threshold": 0.85,
         "action": "Click",
         "next": [
             "任务间隔"
@@ -335,7 +337,7 @@
             85
         ],
         "action": "Click",
-        "post_delay": 1000
+        "post_delay": 2500
     },
     "任务间隔": {
         "recognition": "DirectHit",

@@ -1,0 +1,269 @@
+{
+    "切换账号": {
+        "action": {
+            "type": "StopApp",
+            "param": {
+                "package": "com.zy.wqmt.cn"
+            }
+        },
+        "post_delay": 3000,
+        "focus": {
+            "Node.Action.Succeeded": "重启游戏，返回登录界面"
+        },
+        "next": [
+            "切换账号_启动游戏"
+        ]
+    },
+    "切换账号_启动游戏": {
+        "action": {
+            "type": "StartApp",
+            "param": {
+                "package": "com.zy.wqmt.cn"
+            }
+        },
+        "post_delay": 8000,
+        "timeout": 240000,
+        "focus": {
+            "Node.Action.Succeeded": "等待游戏启动"
+        },
+        "next": [
+            "[JumpBack]关闭系统公告",
+            "[JumpBack]一般弹窗",
+            "切换账号_等待登录界面",
+            "切换账号_账号登录"
+        ]
+    },
+    "切换账号_等待登录界面": {
+        "recognition": "OCR",
+        "expected": "进入管理局",
+        "action": "DoNothing",
+        "timeout": 120000,
+        "focus": {
+            "Node.Recognition.Succeeded": "等待游戏加载"
+        },
+        "next": [
+            "切换账号_网络错误",
+            "[JumpBack]关闭公告",
+            "[JumpBack]关闭系统公告",
+            "[JumpBack]一般弹窗",
+            "切换账号_入口"
+        ],
+        "on_error": [
+            "切换账号_重启游戏"
+        ]
+    },
+    "切换账号_重启游戏": {
+        "action": {
+            "type": "StopApp",
+            "param": {
+                "package": "com.zy.wqmt.cn"
+            }
+        },
+        "post_delay": 3000,
+        "focus": {
+            "Node.Action.Succeeded": "长时间没到登录界面，重启游戏"
+        },
+        "next": [
+            "切换账号_启动游戏"
+        ]
+    },
+    "切换账号_网络错误": {
+        "recognition": "OCR",
+        "expected": "重试",
+        "roi": [
+            700,
+            470,
+            215,
+            90
+        ],
+        "timeout": 240000,
+        "action": "Click",
+        "post_delay": 15000,
+        "focus": {
+            "Node.Action.Succeeded": "网络异常，点击重试"
+        },
+        "next": [
+            "切换账号_等待登录界面"
+        ]
+    },
+    "切换账号_用户协议": {
+        "recognition": "OCR",
+        "expected": "同意",
+        "roi": [
+            667,
+            587,
+            280,
+            80
+        ],
+        "timeout": 45000,
+        "action": "Click",
+        "post_delay": 1500,
+        "focus": {
+            "Node.Action.Succeeded": "同意用户协议"
+        },
+        "next": [
+            "切换账号_账号登录",
+            "[JumpBack]一般弹窗"
+        ]
+    },
+    "切换账号_入口": {
+        "recognition": "TemplateMatch",
+        "template": "切换账号.png",
+        "roi": [
+            1133,
+            400,
+            147,
+            147
+        ],
+        "threshold": 0.8,
+        "timeout": 45000,
+        "action": "Click",
+        "post_delay": 1500,
+        "focus": {
+            "Node.Action.Succeeded": "打开账号切换"
+        },
+        "next": [
+            "切换账号_用户协议",
+            "切换账号_账号登录",
+            "[JumpBack]一般弹窗"
+        ],
+        "on_error": [
+            "切换账号_失败"
+        ]
+    },
+    "切换账号_账号登录": {
+        "recognition": "OCR",
+        "expected": "账号登录",
+        "roi": [
+            553,
+            573,
+            173,
+            73
+        ],
+        "timeout": 45000,
+        "action": "Click",
+        "post_delay": 2000,
+        "focus": {
+            "Node.Action.Succeeded": "点击账号登录"
+        },
+        "next": [
+            "切换账号_展开账号列表"
+        ],
+        "on_error": [
+            "切换账号_失败"
+        ]
+    },
+    "切换账号_展开账号列表": {
+        "recognition": "OCR",
+        "expected": "登录其他账号",
+        "roi": [
+            533,
+            487,
+            213,
+            73
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "target": [
+            873,
+            308,
+            16,
+            16
+        ],
+        "post_delay": 1200,
+        "focus": {
+            "Node.Recognition.Succeeded": "展开已保存的账号列表"
+        },
+        "next": [
+            "切换账号_选择账号"
+        ],
+        "on_error": [
+            "切换账号_失败"
+        ]
+    },
+    "切换账号_选择账号": {
+        "recognition": "OCR",
+        "expected": [
+            "未填写手机号"
+        ],
+        "roi": [
+            380,
+            330,
+            420,
+            275
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "post_delay": 1200,
+        "focus": {
+            "Node.Recognition.Succeeded": "已选中目标账号"
+        },
+        "next": [
+            "切换账号_确认登录"
+        ],
+        "on_error": [
+            "切换账号_账号不存在"
+        ]
+    },
+    "切换账号_确认登录": {
+        "recognition": "OCR",
+        "expected": "登录",
+        "roi": [
+            733,
+            420,
+            147,
+            60
+        ],
+        "timeout": 180000,
+        "action": "Click",
+        "post_delay": 3000,
+        "focus": {
+            "Node.Action.Succeeded": "登录中"
+        },
+        "next": [
+            "切换账号_登录完成"
+        ],
+        "on_error": [
+            "切换账号_失败"
+        ]
+    },
+    "切换账号_登录完成": {
+        "recognition": "OCR",
+        "expected": "进入管理局",
+        "action": "DoNothing",
+        "timeout": 120000,
+        "focus": {
+            "Node.Recognition.Succeeded": "账号已切换"
+        },
+        "next": [
+            "登录"
+        ],
+        "on_error": [
+            "切换账号_失败"
+        ]
+    },
+    "切换账号_账号不存在": {
+        "action": "DoNothing",
+        "post_delay": 100,
+        "focus": {
+            "Node.Action.Succeeded": "没找到这个账号：请确认「切换账号」选项里填的手机号，或先在游戏里登录一次该账号"
+        },
+        "next": [
+            "切换账号_停止"
+        ]
+    },
+    "切换账号_失败": {
+        "action": "DoNothing",
+        "post_delay": 100,
+        "focus": {
+            "Node.Action.Succeeded": "切换账号失败，请检查游戏界面是否停在登录界面"
+        },
+        "next": [
+            "切换账号_停止"
+        ]
+    },
+    "切换账号_停止": {
+        "action": "StopTask",
+        "post_delay": 100
+    }
+}

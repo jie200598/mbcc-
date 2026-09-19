@@ -13,19 +13,24 @@
         }
     },
     "登录前处理": {
+        "timeout": 300000,
         "action": {
-            "type": "DoNothing",
-            "param": {
-                "timeout": 30000
-            }
+            "type": "DoNothing"
         },
         "next": [
+            "网络错误处理",
+            "[JumpBack]关闭公告",
+            "[JumpBack]关闭系统公告",
+            "[JumpBack]一般弹窗",
             "登录",
-            "[JumpBack]关闭公告"
+            "首页"
         ],
         "on_error": [
-            "登录前异常处理"
+            "重启游戏"
         ],
+        "focus": {
+            "Node.Action.Succeeded": "等待游戏加载"
+        },
         "$__mpe_code": {
             "position": {
                 "x": 332,
@@ -68,6 +73,25 @@
             }
         }
     },
+    "关闭系统公告": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [140,120,1020,95],
+                "expected": ["系统公告","活动公告"]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [640,40,1,1]
+            }
+        },
+        "post_delay": 1000,
+        "focus": {
+            "Node.Action.Succeeded": "关闭系统公告"
+        }
+    },
     "登录": {
         "recognition": {
             "type": "OCR",
@@ -93,21 +117,25 @@
         }
     },
     "登录后处理": {
+        "timeout": 180000,
         "action": {
-            "type": "DoNothing",
-            "param": {
-                "timeout": 15000
-            }
+            "type": "DoNothing"
         },
         "next": [
+            "网络错误处理",
+            "[JumpBack]关闭公告",
+            "[JumpBack]关闭系统公告",
             "[JumpBack]刮刮乐",
             "[JumpBack]情绪检测",
             "[JumpBack]禁闭者生日",
             "[JumpBack]月卡提示 - 取消",
             "[JumpBack]月卡",
             "[JumpBack]管理局活动月卡",
-            "首页",
-            "[JumpBack]一般弹窗"
+            "[JumpBack]一般弹窗",
+            "首页"
+        ],
+        "on_error": [
+            "登录前处理"
         ],
         "$__mpe_code": {
             "position": {
@@ -147,6 +175,9 @@
         "next": [
             "情绪检测完成",
             "前往补测"
+        ],
+        "on_error": [
+            "登录后处理"
         ],
         "$__mpe_code": {
             "position": {
@@ -201,6 +232,9 @@
         },
         "next": [
             "情绪检测"
+        ],
+        "on_error": [
+            "登录后处理"
         ],
         "$__mpe_code": {
             "position": {
@@ -258,6 +292,9 @@
         },
         "next": [
             "生日日历"
+        ],
+        "on_error": [
+            "登录后处理"
         ],
         "$__mpe_code": {
             "position": {
@@ -361,6 +398,9 @@
         "post_wait_freezes": 2000,
         "next": [
             "关闭界面"
+        ],
+        "on_error": [
+            "登录后处理"
         ],
         "$__mpe_code": {
             "position": {
@@ -551,6 +591,79 @@
             }
         }
     },
+    "网络错误处理": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    700,
+                    470,
+                    215,
+                    90
+                ],
+                "expected": [
+                    "重试"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 15000,
+        "next": [
+            "登录前处理"
+        ],
+        "focus": {
+            "Node.Action.Succeeded": "网络异常，点击重试"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 1829
+            }
+        }
+    },
+    "重启游戏": {
+        "action": {
+            "type": "StopApp",
+            "param": {
+                "package": "com.zy.wqmt.cn"
+            }
+        },
+        "next": [
+            "重新启动游戏"
+        ],
+        "focus": {
+            "Node.Action.Succeeded": "长时间未进入游戏，重启游戏"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 2213
+            }
+        }
+    },
+    "重新启动游戏": {
+        "action": {
+            "type": "StartApp",
+            "param": {
+                "package": "com.zy.wqmt.cn"
+            }
+        },
+        "post_delay": 20000,
+        "next": [
+            "登录前处理"
+        ],
+        "focus": {
+            "Node.Action.Succeeded": "已重新启动游戏"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 2213
+            }
+        }
+    },
     "刮刮乐": {
         "recognition": {
             "type": "OCR",
@@ -634,6 +747,9 @@
         "post_delay": 1000,
         "next": [
             "关闭界面1"
+        ],
+        "on_error": [
+            "登录后处理"
         ],
         "$__mpe_code": {
             "position": {
@@ -727,6 +843,9 @@
         },
         "next": [
             "检查活动月卡领取"
+        ],
+        "on_error": [
+            "登录后处理"
         ]
     },
     "检查活动月卡领取": {
@@ -769,6 +888,9 @@
         },
         "next": [
             "关闭活动月卡界面"
+        ],
+        "on_error": [
+            "登录后处理"
         ]
     },
     "关闭活动月卡界面": {
